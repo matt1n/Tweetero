@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +33,12 @@ public class TweetController {
     @GetMapping
     public ResponseEntity<Object> getTweets(){
         return ResponseEntity.status(HttpStatus.OK).body(tweetService.findAll());
-    } 
+    }
+
+    @GetMapping(path = "/user/{userId}")
+    public ResponseEntity<Object> getTweetsByUser(@PathVariable("userId")Long userId){
+        return ResponseEntity.status(HttpStatus.OK).body(tweetService.findByUser(userId));
+    }
 
     @PostMapping
     public ResponseEntity<Object> postTweet(@RequestBody @Valid TweetDTO body) {

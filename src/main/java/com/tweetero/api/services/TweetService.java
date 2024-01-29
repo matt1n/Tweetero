@@ -34,6 +34,10 @@ public class TweetService {
         return Optional.of(tweetRepository.save(tweet));
     }
 
+    public Optional<Object> findByUser(Long userId){
+        return Optional.of(tweetRepository.findByUserId(userId));
+    }
+
     
     
 }
