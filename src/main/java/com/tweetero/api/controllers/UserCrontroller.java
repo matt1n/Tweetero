@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tweetero.api.dtos.UserDTO;
 import com.tweetero.api.models.UserModel;
 import com.tweetero.api.repositories.UserRepository;
+import com.tweetero.api.services.UserService;
 
 import jakarta.validation.Valid;
 
@@ -21,23 +22,24 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UserCrontroller {
 
-    final UserRepository userRepository;
+    final UserService userService;
 
-    UserCrontroller(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    UserCrontroller(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public ResponseEntity<Object> getUsers(){
-        List<UserModel> users = userRepository.findAll();
+        List<UserModel> users = userService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserDTO body) {
-
-        UserModel user = new UserModel(body);
-        userRepository.save(user);
+        Optional<UserModel> user = userService.save(body);
+        if (user.isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nome de usuário indisponivel!");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
     

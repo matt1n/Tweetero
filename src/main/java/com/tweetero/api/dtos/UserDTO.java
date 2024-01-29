@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class UserDTO {
     @NotBlank
-    @URL
+    //@URL
     private String avatar;
     
     @NotBlank
